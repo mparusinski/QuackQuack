@@ -2,6 +2,7 @@ from lxml import html
 from datetime import date, datetime
 import requests
 import re
+from sys import platform
 import locale
 
 URL_RU = 'http://www.crous-strasbourg.fr/restaurant/resto-u-illkirch/'
@@ -48,7 +49,10 @@ def check_for_canard(date_menus):
 
 
 def main():
-    locale.setlocale(locale.LC_ALL, "fr_FR")
+    if platform == "linux":
+        locale.setlocale(locale.LC_ALL, "fr_FR.utf-8")
+    else:
+        locale.setlocale(locale.LC_ALL, "fr_FR")
     html_tree = retrieve_html_from(URL_RU)
     date_menus = get_menu_from_html(html_tree)
     canard_dates = check_for_canard(date_menus)
